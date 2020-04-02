@@ -54,7 +54,7 @@ export class SettingsDashboard extends Component {
         const form_context = {
             getFormContext: this.props.getFormContext,
             submitFunction: this.props.updateProfile,
-            what: "User Profile",
+            what: "User Profile Settings",
             what_id: this.props.user.user_profile.id,
             field_list: [
                 // {field_type: "invisible", label: "", name: "id", start_value: this.props.user.user_profile.id},
@@ -111,10 +111,11 @@ export class SettingsDashboard extends Component {
             )
         };
 
+        // Achievement Form context
         const achievement_form_context = {
             getFormContext: this.props.getFormContext,
             submitFunction: this.props.createItem,
-            what: "Achievement",
+            what: "Create Achievement",
             what_id: null,
             field_list: [
                 {
@@ -143,17 +144,47 @@ export class SettingsDashboard extends Component {
                 },
             ],
             addContextToForm: (context, field_list) => {
-                    let category_options = [];
-                    context.map(type => {
-                        category_options.push({field_name: "type", value: type[0], label: type[1]})
-                    });
-                    field_list.map(field => {
-                        if (field.label === "Type") {
-                            field["options"] = category_options
-                        }
-                    });
-                }
+                let category_options = [];
+                context.map(type => {
+                    category_options.push({field_name: "type", value: type[0], label: type[1]})
+                });
+                field_list.map(field => {
+                    if (field.label === "Type") {
+                        field["options"] = category_options
+                    }
+                });
+            }
         };
+
+        // Edit Role data
+        const role_form_context = (what, role) => ({
+            getFormContext: this.props.getFormContext,
+            submitFunction: this.props.updateProfile,
+            what: what,
+            what_id: this.props.user.user_profile.id,
+            field_list: [
+                {field_type: "checkbox", label: "Active", name: "active", start_value: role.active},
+                {field_type: "multiselect", label: "Categories", name: "categories", options: null, start_value: role.categories},
+                {field_type: "textarea", label: "Short bio", name: "short_bio", start_value: role.short_bio},
+                {field_type: "checkbox", label: "Show in listings", name: "show_in_listings", start_value: role.show_in_listings},
+                {field_type: "checkbox", label: "Local connect", name: "local_connect", start_value: role.local_connect},
+                {field_type: "checkbox", label: "Online connect", name: "online_connect", start_value: role.online_connect},
+            ],
+            addContextToForm: (context, field_list) => {
+                let category_options = [];
+                context.map(category => {
+                    category_options.push({field_name: "categories", value: category.id, label: category.name})
+                });
+                field_list.map(field => {
+                    if (field.label === "Categories") {
+                        field["options"] = category_options
+                    }
+                });
+            }
+        });
+
+        const educator_form_context = this.props.user.educator ? role_form_context("Educator Settings", this.props.user.educator) : null;
+        const student_form_context = this.props.user.student ? role_form_context("Student Settings", this.props.user.student) : null;
 
 
         // Prepare BubbleMenu data
@@ -198,6 +229,27 @@ export class SettingsDashboard extends Component {
             },
         ];
 
+        if (this.props.user.educator) {
+            button_list.push(
+                {
+                    name: "educator_settings",
+                    type: button_types.VIEW_BUTTON,
+                    icon: "fas fa-chalkboard-teacher",
+                    view: "educator_settings",
+                }
+            )
+        }
+        if (this.props.user.student) {
+            button_list.push(
+                {
+                    name: "student_settings",
+                    type: button_types.VIEW_BUTTON,
+                    icon: "fas fa-user-graduate",
+                    view: "student_settings",
+                }
+            )
+        }
+
         return (
             <Fragment>
                 <div className="container wrapper mt-2 mt-lg-4">
@@ -205,8 +257,17 @@ export class SettingsDashboard extends Component {
                     {this.props.view === "general_settings" ?
                         <FormComponent form_context={form_context}/>
                         : null}
+
                     {this.props.view === "profile_picture" ?
                         <ProfilePicture/>
+                        : null}
+
+                    {this.props.view === "educator_settings" ?
+                        <FormComponent form_context={educator_form_context}/>
+                        : null}
+
+                    {this.props.view === "student_settings" ?
+                        <FormComponent form_context={student_form_context}/>
                         : null}
 
                     {this.props.sub_view === "achievements_list" ?

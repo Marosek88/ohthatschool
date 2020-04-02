@@ -66,26 +66,26 @@ class RegisterAPI(generics.GenericAPIView):
         es_helper = ElasticModelViewSet()
         # Get User Profile and add ES data
         user_profile = UserProfileSerializer(user_profile_object).data
-        es_helper.add_es_data([user_profile, ], UserProfileDocument)
+        # es_helper.add_es_data([user_profile, ], UserProfileDocument)
 
         # Get Educator and add ES data (if exists)
         try:
             educator = EducatorSerializer(user_profile_object.educator).data
-            es_helper.add_es_data([educator, ], EducatorDocument)
+            # es_helper.add_es_data([educator, ], EducatorDocument)
         except ObjectDoesNotExist:
             educator = None
 
         # Get Student and add ES data (if exists)
         try:
             student = StudentSerializer(user_profile_object.student).data
-            es_helper.add_es_data([student, ], StudentDocument)
+            # es_helper.add_es_data([student, ], StudentDocument)
         except ObjectDoesNotExist:
             student = None
 
         # Get Parent and add ES data (if exists)
         try:
             parent = ParentSerializer(user_profile_object.parent).data
-            es_helper.add_es_data([parent, ], ParentDocument)
+            # es_helper.add_es_data([parent, ], ParentDocument)
         except ObjectDoesNotExist:
             parent = None
 
@@ -112,26 +112,26 @@ class LoginAPI(generics.GenericAPIView):
         es_helper = ElasticModelViewSet()
         # Get User Profile and add ES data
         user_profile = UserProfileSerializer(user_profile_object).data
-        es_helper.add_es_data([user_profile, ], UserProfileDocument)
+        # es_helper.add_es_data([user_profile, ], UserProfileDocument)
 
         # Get Educator and add ES data (if exists)
         try:
             educator = EducatorSerializer(user_profile_object.educator).data
-            es_helper.add_es_data([educator, ], EducatorDocument)
+            # es_helper.add_es_data([educator, ], EducatorDocument)
         except ObjectDoesNotExist:
             educator = None
 
         # Get Student and add ES data (if exists)
         try:
             student = StudentSerializer(user_profile_object.student).data
-            es_helper.add_es_data([student, ], StudentDocument)
+            # es_helper.add_es_data([student, ], StudentDocument)
         except ObjectDoesNotExist:
             student = None
 
         # Get Parent and add ES data (if exists)
         try:
             parent = ParentSerializer(user_profile_object.parent).data
-            es_helper.add_es_data([parent, ], ParentDocument)
+            # es_helper.add_es_data([parent, ], ParentDocument)
         except ObjectDoesNotExist:
             parent = None
 
@@ -180,33 +180,33 @@ class UserProfileViewSet(ElasticModelViewSet):
         user_profile.image = request.data['image']
         user_profile.save()
         data = UserProfileSerializer(user_profile).data
-        self.add_es_data([data, ])
+        # self.add_es_data([data, ])
         return Response(data, 200)
 
     @action(detail=False, methods=['GET'])
     def get_user_profiles(self, request):
         # Get User Profile and add ES data
         user_profile = UserProfileSerializer(request.user.user_profile).data
-        self.add_es_data([user_profile, ], UserProfileDocument)
+        # self.add_es_data([user_profile, ], UserProfileDocument)
 
         # Get Educator and add ES data (if exists)
         try:
             educator = EducatorSerializer(request.user.user_profile.educator).data
-            self.add_es_data([educator, ], EducatorDocument)
+            # self.add_es_data([educator, ], EducatorDocument)
         except ObjectDoesNotExist:
             educator = None
 
         # Get Student and add ES data (if exists)
         try:
             student = StudentSerializer(request.user.user_profile.student).data
-            self.add_es_data([student, ], StudentDocument)
+            # self.add_es_data([student, ], StudentDocument)
         except ObjectDoesNotExist:
             student = None
 
         # Get Parent and add ES data (if exists)
         try:
             parent = ParentSerializer(request.user.user_profile.parent).data
-            self.add_es_data([parent, ], ParentDocument)
+            # self.add_es_data([parent, ], ParentDocument)
         except ObjectDoesNotExist:
             parent = None
 

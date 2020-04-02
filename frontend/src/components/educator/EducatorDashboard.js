@@ -175,7 +175,7 @@ export class EducatorDashboard extends Component {
                     {label: "Id", properties: ["id"]},
                     {label: "Image", properties: ["image"]},
                     {label: "Title", properties: ["title"]},
-                    {label: "Subtitle", properties: ["owner", "id", "email"]},
+                    {label: "Subtitle", properties: ["category", "name"]},
                     {label: "Description", properties: ["description"]},
                     {label: "Rating", properties: ["rating"]},
                     {label: "Price", properties: ["price"]},
@@ -186,7 +186,7 @@ export class EducatorDashboard extends Component {
                         link: `/profile/educator/my_courses/${tile_object["Id"]}`,
                         image: tile_object["Image"],
                         title: tile_object["Title"],
-                        subtitle: `by ${tile_object["Subtitle"]}`,
+                        subtitle: `${tile_object["Subtitle"]}`,
                         description: tile_object["Description"],
                         bottom: [
                             ["Learners", "123"],

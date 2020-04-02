@@ -17,7 +17,7 @@ import {tokenConfig} from "./auth";
 
 // GET CATEGORIES LIST
 export const getCategories = () => dispatch => {
-    axios.get('/api/course/category/')
+    axios.get('/api/auth/category/')
         .then(res => {
             dispatch({
                 type: GET_SEARCH_CATEGORIES,

@@ -50,7 +50,7 @@ class StudentUserViewSet(ElasticModelViewSet):
     def get_educators(self, request):
         educators = request.user.user_profile.student.educators
         data = EducatorSerializer(educators, many=True).data
-        self.add_es_data(data, EducatorDocument)
+        # self.add_es_data(data, EducatorDocument)
         return Response(data, 200)
 
     @action(detail=False, methods=['GET'])
@@ -85,8 +85,8 @@ class StudentCourseViewSet(ElasticModelViewSet):
     def get_student_courses(self, request):
         student_courses = request.user.user_profile.student.student_courses
         data = StudentCourseSerializer(student_courses, many=True).data
-        for item in data:
-            self.add_es_data([item['course']], CourseDocument)
+        # for item in data:
+        #     # self.add_es_data([item['course']], CourseDocument)
         return Response(data, 200)
 
     @action(detail=True, methods=['GET'])

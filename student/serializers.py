@@ -8,9 +8,9 @@ from educator.serializers import EducatorSerializer
 
 class StudentSerializer(serializers.ModelSerializer):
     """Student model serializer."""
-    categories = CategorySerializer(required=False, many=True)
-    courses = CourseSerializer(required=False, many=True)
-    educators = EducatorSerializer(required=False, many=True)
+    # categories = CategorySerializer(required=False, many=True)
+    # courses = CourseSerializer(required=False, many=True)
+    # educators = EducatorSerializer(required=False, many=True)
     id = UserProfileSerializer(required=False)
 
     class Meta:

@@ -15,7 +15,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         response = super().list(request, *args, **kwargs)
         data = response.data
         # Add Elasticsearch data
-        self.add_es_data(data)
+        # self.add_es_data(data)
         return response
 
     @action(detail=False, methods=['GET'])
@@ -40,7 +40,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
             self.es_document_class.init()
             result = self.es_document_class(**data).save()
 
-            self.add_es_data([response.data])
+            # self.add_es_data([response.data])
             return response
         #
         #
@@ -53,7 +53,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         response = super().retrieve(request, *args, **kwargs)
         data = response.data
         # Additional information from Elasticsearch
-        self.add_es_data([data])
+        # self.add_es_data([data])
         return response
 
     def update(self, request, *args, **kwargs):
@@ -63,7 +63,7 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
             result = kwargs['partial_result']
         if result == 'Updated':
             data = super().update(request, *args, **kwargs).data
-            self.add_es_data([data])
+            # self.add_es_data([data])
             return Response(data, 200)
         elif result == 'Elasticsearch entry not found':
             return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)

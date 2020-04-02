@@ -38,6 +38,8 @@ export const RESET_FORM_CONTEXT = "RESET_FORM_CONTEXT";
 // Profile
 export const PICTURE_UPLOADED = "PICTURE_UPLOADED";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
+export const UPDATE_EDUCATOR = "UPDATE_EDUCATOR";
+export const UPDATE_STUDENT = "UPDATE_STUDENT";
 
 // Message alerts
 export const RETURN_ERRORS = "RETURN_ERRORS";

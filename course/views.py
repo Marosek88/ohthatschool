@@ -54,7 +54,7 @@ class CourseViewSet(ElasticModelViewSet):
         if sort_by:
             courses.order_by(f'{sort_by}')
         data = CourseSerializer(courses, many=True).data
-        self.add_es_data(data)
+        # self.add_es_data(data)
         return Response(data, 200)
 
 
@@ -80,7 +80,7 @@ class CourseEducatorViewSet(ElasticModelViewSet):
         course = self.get_object()
         course_modules = course.modules
         serializer = ModuleSerializer(course_modules, many=True)
-        self.add_es_data(serializer.data, ModuleDocument)
+        # self.add_es_data(serializer.data, ModuleDocument)
         return Response(serializer.data, status=200)
 
 
@@ -105,7 +105,7 @@ class CourseStudentViewSet(ElasticModelViewSet):
         course = self.get_object()
         course_modules = course.modules
         serializer = ModuleSerializer(course_modules, many=True)
-        self.add_es_data(serializer.data, ModuleDocument)
+        # self.add_es_data(serializer.data, ModuleDocument)
         return Response(serializer.data, status=200)
 
 
@@ -157,7 +157,7 @@ class ModuleEducatorViewSet(ElasticModelViewSet):
         module = self.get_object()
         module_lessons = module.lessons
         serializer = LessonSerializer(module_lessons, many=True)
-        self.add_es_data(serializer.data, LessonDocument)
+        # self.add_es_data(serializer.data, LessonDocument)
         return Response(serializer.data, status=200)
 
 

@@ -31,7 +31,7 @@ export const getFormContext = (get_what, get_id) => (dispatch, getState) => {
 
     // FORM CONTEXT FOR COURSE CREATION --------------------------------------------------------------------- Form C
     if (get_what === "Course") {
-        axios.get('/api/course/category/')
+        axios.get('/api/auth/category/')
             .then(res => {
                 dispatch({
                     type: GET_FORM_CONTEXT,

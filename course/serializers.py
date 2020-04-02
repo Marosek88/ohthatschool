@@ -14,6 +14,13 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+    def create(self, validated_data):
+        category = self.initial_data['category']
+        instance = super(CourseSerializer, self).create(validated_data)
+        instance.category_id = category
+        instance.save()
+        return instance
+
 
 class ModuleSerializer(serializers.ModelSerializer):
     """Module model serializer."""

@@ -6,7 +6,7 @@ from accounts.models import UserProfile, Category
 class Educator(models.Model):
     """Educator Django model"""
     active = models.BooleanField(default=True)
-    categories = models.ManyToManyField(Category, related_name='educators')
+    categories = models.ManyToManyField(Category, related_name='educators', blank=True)
     created_at = models.DateTimeField(auto_now=True)
     id = models.OneToOneField(UserProfile, related_name='educator', on_delete=models.CASCADE, primary_key=True)
     local_connect = models.BooleanField(default=False)

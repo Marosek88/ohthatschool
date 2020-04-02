@@ -9,6 +9,8 @@ import {
     REGISTER_SUCCESS,
     PICTURE_UPLOADED,
     UPDATE_PROFILE,
+    UPDATE_EDUCATOR,
+    UPDATE_STUDENT,
     CREATE_EDUCATOR,
     CREATE_STUDENT
 } from '../actions/types';
@@ -44,10 +46,20 @@ export default function (state = initialState, action) {
                 ...state,
                 user: {...state.user, user_profile: action.payload}
             };
-            case UPDATE_PROFILE:
+        case UPDATE_PROFILE:
             return {
                 ...state,
                 user: {...state.user, user_profile: action.payload}
+            };
+        case UPDATE_EDUCATOR:
+            return {
+                ...state,
+                user: {...state.user, educator: action.payload}
+            };
+        case UPDATE_STUDENT:
+            return {
+                ...state,
+                user: {...state.user, student: action.payload}
             };
         case CREATE_EDUCATOR:
             return {

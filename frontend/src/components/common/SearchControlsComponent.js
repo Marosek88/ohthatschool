@@ -68,14 +68,13 @@ export class SearchControlsComponent extends Component {
         if (this.state.link !== "") {
             return <Redirect to={this.state.link}/>
         }
-
         // Prepare Categories list
         const cats = this.props.categories;
         let category_list = [];
         for (let i = 0; i < cats.length; i++) {
 
             category_list.push(
-                <div className="navbar-close dropdown-item"
+                <div className="dropdown-item"
                      key={cats[i].id}
                      style={{display: "flex"}}
                      onClick={() => this.handleCategoryClick(cats[i].id)}>
@@ -93,7 +92,7 @@ export class SearchControlsComponent extends Component {
 
         const sort_list =
             <Fragment>
-                <div className="navbar-close dropdown-item"
+                <div className="dropdown-item"
                      style={{display: "flex"}}
                      onClick={() => this.handleSortClick("title")}>
                     <span className="mr-3">Title</span>
@@ -104,7 +103,7 @@ export class SearchControlsComponent extends Component {
                            checked={this.state.form_data.sort_by === "title"}/>
                 </div>
                 <div className="dropdown-divider"/>
-                <div className="navbar-close dropdown-item"
+                <div className="dropdown-item"
                      style={{display: "flex"}}
                      onClick={() => this.handleSortClick("category")}>
                     <span className="mr-3">Category</span>

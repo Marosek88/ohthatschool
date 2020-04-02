@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from .models import Educator
 
-from accounts.serializers import UserProfileSerializer
+from accounts.serializers import UserProfileSerializer, CategorySerializer
 
 
 class EducatorSerializer(serializers.ModelSerializer):
     """Educator model serializer."""
     id = UserProfileSerializer(required=False)
-    # categories = CategorySerializer(required=False, many=True)
 
     class Meta:
         model = Educator
