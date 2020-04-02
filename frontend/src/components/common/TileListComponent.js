@@ -20,7 +20,9 @@ export class TileListComponent extends Component {
     };
 
     componentDidMount() {
-        this.props.tile_list_data.getList(this.props.tile_list_data.get_what)
+        if (this.props.tile_list_data.getList) {
+            this.props.tile_list_data.getList(this.props.tile_list_data.get_what)
+        }
     }
 
     render() {

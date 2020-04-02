@@ -3,10 +3,11 @@ from knox import views as knox_views
 from rest_framework import routers
 
 
-from .views import RegisterAPI, LoginAPI, UserAPI, UserProfileViewSet
+from .views import RegisterAPI, LoginAPI, UserAPI, UserProfileViewSet, CategoryViewSet
 
 router = routers.DefaultRouter()
 router.register('api/auth/user_profile', UserProfileViewSet, 'user-profile')
+router.register('api/auth/category', CategoryViewSet, 'auth-category')
 
 urlpatterns = [
     path('api/auth', include('knox.urls')),

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {changePage, changeView} from "../../actions/website";
 import PropTypes from "prop-types";
+
+import {changePage} from "../../actions/website";
 
 
 export class PieMenu extends Component {
@@ -10,6 +11,14 @@ export class PieMenu extends Component {
         page: PropTypes.string.isRequired,
         changePage: PropTypes.func.isRequired,
     };
+
+    componentDidMount() {
+        this.props.changePage("welcome")
+    }
+
+    componentWillUnmount() {
+        this.props.changePage("")
+    }
 
     scrollToInfo = () => {
         $('.js-scroll-trigger[data-href*="#"]:not([data-href="#"])').click(function () {

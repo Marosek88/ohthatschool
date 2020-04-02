@@ -11,18 +11,15 @@ html_strip = analyzer('html_strip',
 
 class EducatorDocument(Document):
     """Educator information"""
-    id = Keyword()
-    location = GeoPoint()
-    categories = Keyword()
-    contributing_to_courses = Keyword()
-    rating = ScaledFloat(scaling_factor=100)
     active = Boolean()
-    show_in_listings = Boolean()
+    categories = Keyword()
+    created_at = Date()
+    id = Keyword()
     local_connect = Boolean()
     online_connect = Boolean()
+    rating = ScaledFloat(scaling_factor=100)
     short_bio = Text(required=False)
-
-    created_at = Date()
+    show_in_listings = Boolean()
     updated_at = Date()
 
     class Index:

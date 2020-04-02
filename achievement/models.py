@@ -24,16 +24,20 @@ class Achievement(models.Model):
         (FROM_COURSE_TO_STUDENT, 'From Course to Student'),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now=True)
+    description = models.TextField(blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    image = models.ImageField(null=True, upload_to='achievement_pictures')
     name = models.CharField(null=False, blank=False, max_length=100)
-    owner = models.ForeignKey(UserProfile, related_name="created_achievements", on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(UserProfile, related_name="created_achievements", on_delete=models.CASCADE, null=True,
+                              blank=True)
     related_courses = models.ManyToManyField(Course, related_name='achievements', blank=True)
     related_educators = models.ManyToManyField(Educator, related_name='achievements', blank=True)
     related_parents = models.ManyToManyField(Parent, related_name='achievements', blank=True)
     related_students = models.ManyToManyField(Student, related_name='achievements', blank=True)
     type = models.CharField(null=False, blank=False, max_length=4, choices=TYPE_CHOICES)
-    image = models.ImageField(null=True)
+    updated_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return f'Achievement: "{self.name}", Type: {self.type}'

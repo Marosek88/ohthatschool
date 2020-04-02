@@ -11,21 +11,10 @@ html_strip = analyzer('html_strip',
 
 class ParentDocument(Document):
     """Parent information"""
-    id = Keyword()
-    first_name = Text(fields={'keyword': Keyword()})
-    last_name = Text(fields={'keyword': Keyword()})
-    email = Text(fields={'keyword': Keyword()})
-    location = GeoPoint()
-    categories = Keyword()
-    achievements = Keyword()
-    rating = ScaledFloat(scaling_factor=100)
-    active = Boolean()
-    show_in_listings = Boolean()
-    local_connect = Boolean()
-    online_connect = Boolean()
-    short_bio = Text(required=False)
-
     created_at = Date()
+    children = Keyword()
+    id = Keyword()
+    short_bio = Text(required=False)
     updated_at = Date()
 
     class Index:

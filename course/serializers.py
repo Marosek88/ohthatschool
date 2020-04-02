@@ -1,18 +1,13 @@
 from rest_framework import serializers
 from .models import Category, Course, Module, Lesson
 
+from accounts.serializers import CategorySerializer
 from educator.serializers import EducatorSerializer
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    """Category model serializer."""
-    class Meta:
-        model = Category
-        fields = '__all__'
 
 
 class CourseSerializer(serializers.ModelSerializer):
     """Course model serializer."""
+    category = CategorySerializer(required=False)
     owner = EducatorSerializer(required=False)
 
     class Meta:
@@ -22,8 +17,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class ModuleSerializer(serializers.ModelSerializer):
     """Module model serializer."""
-    owner = EducatorSerializer(required=False)
     course = CourseSerializer(required=False)
+    owner = EducatorSerializer(required=False)
 
     class Meta:
         model = Module
@@ -39,8 +34,8 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     """Lesson model serializer."""
-    owner = EducatorSerializer(required=False)
     module = ModuleSerializer(required=False)
+    owner = EducatorSerializer(required=False)
 
     class Meta:
         model = Lesson

@@ -1,18 +1,16 @@
 import axios from 'axios';
 
 import {
-    RESET_DETAILS,
     GET_LIST_ITEMS,
-    RESET_LIST_ITEMS,
     COMMON_LOADING_LIST_ITEMS,
     COMMON_LOADED_LIST_ITEMS,
 
-    GET_SEARCH_CATEGORIES, CREATE_EDUCATOR, CREATE_ITEM
-
+    GET_SEARCH_CATEGORIES,
+    OUTSIDE_SEARCH,
+    RESET_OUTSIDE_SEARCH,
 } from "./types";
 import {returnErrors, returnWarnings, returnInfo, returnSuccess} from "./messages"
 import {tokenConfig} from "./auth";
-
 
 
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  GET SEARCH CONTEXT  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -30,9 +28,7 @@ export const getCategories = () => dispatch => {
 };
 
 
-
-//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  GET LIST ITEMS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  SEARCH LIST ITEMS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 export const search = (page, view, form) => dispatch => {
@@ -48,8 +44,9 @@ export const search = (page, view, form) => dispatch => {
             })
             .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     }
-    // SEARCH PAGE - COURSES ------------------------------------------------------------------------------------
+    // FROM OUTSIDE ------------------------------------------------------------------------------------
     else {
+        dispatch({type: OUTSIDE_SEARCH});
         axios
             .post('/api/course/course/search/', form)
             .then(res => {
@@ -63,9 +60,7 @@ export const search = (page, view, form) => dispatch => {
 };
 
 
-
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  GET LIST ITEMS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 
 export const getList = (get_what, get_id) => (dispatch, getState) => {
@@ -104,21 +99,12 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
 };
 
 
-
 //  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  RESET  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
-// RESET DETAILS
-export const resetDetails = () => (dispatch) => {
+// RESET OUTSIDE SEARCH
+export const resetOutsideSearch = () => (dispatch) => {
     dispatch({
-        type: RESET_DETAILS,
-    });
-};
-
-// RESET LIST ITEMS
-export const resetListItems = () => (dispatch) => {
-    dispatch({
-        type: RESET_LIST_ITEMS,
+        type: RESET_OUTSIDE_SEARCH,
     });
 };

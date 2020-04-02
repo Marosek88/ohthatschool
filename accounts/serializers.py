@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .models import UserProfile
+from .models import UserProfile, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,3 +47,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'id': {'required': False},
             'email': {'required': False},
         }
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """Category model serializer."""
+    class Meta:
+        model = Category
+        fields = '__all__'

@@ -7,6 +7,7 @@ from accounts.serializers import UserProfileSerializer
 class EducatorSerializer(serializers.ModelSerializer):
     """Educator model serializer."""
     id = UserProfileSerializer(required=False)
+    # categories = CategorySerializer(required=False, many=True)
 
     class Meta:
         model = Educator

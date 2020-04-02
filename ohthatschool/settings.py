@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
+    'django_extensions',
 
     'rest_framework',
     'django_elasticsearch_dsl',
@@ -54,7 +55,6 @@ INSTALLED_APPS = [
     'educator.apps.EducatorConfig',
     'parent.apps.ParentConfig',
     'student.apps.StudentConfig',
-    'website.apps.WebsiteConfig',
 ]
 
 REST_FRAMEWORK = {

@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
@@ -6,6 +7,7 @@ import {getCategories, search} from "../../actions/search";
 
 export class SearchControlsComponent extends Component {
     state = {
+        link: "",
         form_data: {
             categories: {},
             sort_by: "",
@@ -51,14 +53,22 @@ export class SearchControlsComponent extends Component {
                 cat_list.push(category)
             }
         });
-
         form.append("categories", JSON.stringify(cat_list));
         form.append("sort_by", sort_by);
         form.append("query", query);
         this.props.search(this.props.page, this.props.view, form);
+
+        if (this.props.page !== "search") {
+            this.state.link = "/search";
+            this.setState(this.state)
+        }
     };
 
     render() {
+        if (this.state.link !== "") {
+            return <Redirect to={this.state.link}/>
+        }
+
         // Prepare Categories list
         const cats = this.props.categories;
         let category_list = [];
@@ -108,8 +118,8 @@ export class SearchControlsComponent extends Component {
             </Fragment>;
 
         return (
-                <div className="collapse navbar-collapse ml-5" id="navbarTogglerDemo02">
-                    <ul className="navbar-close navbar-nav mt-2">
+                <div className="collapse navbar-collapse ml-0 ml-lg-5" id="navbarTogglerDemo03">
+                    <ul className="navbar-nav mt-2">
 
                         {this.props.page === "search" ?
                             <Fragment>
@@ -138,6 +148,7 @@ export class SearchControlsComponent extends Component {
                                         </div>
                                     </div>
                                 </li>
+
                             </Fragment>
 
                             : null}
@@ -165,7 +176,7 @@ export class SearchControlsComponent extends Component {
 const mapStateToProps = state => ({
     categories: state.search.categories,
     page: state.website.page,
-    view: state.website.view
+    view: state.website.view,
 });
 
 export default connect(

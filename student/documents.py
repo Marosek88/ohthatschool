@@ -11,17 +11,16 @@ html_strip = analyzer('html_strip',
 
 class StudentDocument(Document):
     """Student information"""
-    id = Keyword()
-    location = GeoPoint()
+    active = Boolean()
     categories = Keyword()
     courses = Keyword()
-    active = Boolean()
-    show_in_listings = Boolean()
+    created_at = Date()
+    educators = Keyword()
+    id = Keyword()
     local_connect = Boolean()
     online_connect = Boolean()
     short_bio = Text(required=False)
-
-    created_at = Date()
+    show_in_listings = Boolean()
     updated_at = Date()
 
     class Index:
@@ -41,12 +40,11 @@ class StudentDocument(Document):
 
 class StudentCourseDocument(Document):
     """Student Course information"""
+    course = Keyword()
+    created_at = Date()
+    finished = Boolean()
     id = Keyword()
     student = Keyword()
-    course = Keyword()
-    finished = Boolean()
-
-    created_at = Date()
     updated_at = Date()
 
     class Index:
@@ -66,13 +64,12 @@ class StudentCourseDocument(Document):
 
 class StudentModuleDocument(Document):
     """Student Module information"""
-    id = Keyword()
-    student_course = Keyword()
-    student = Keyword()
-    module = Keyword()
-    finished = Boolean()
-
     created_at = Date()
+    finished = Boolean()
+    id = Keyword()
+    module = Keyword()
+    student = Keyword()
+    student_course = Keyword()
     updated_at = Date()
 
     class Index:
@@ -92,13 +89,12 @@ class StudentModuleDocument(Document):
 
 class StudentLessonDocument(Document):
     """Student Lesson information"""
-    id = Keyword()
-    student_module = Keyword()
-    student = Keyword()
-    lesson = Keyword()
-    finished = Boolean()
-
     created_at = Date()
+    finished = Boolean()
+    id = Keyword()
+    lesson = Keyword()
+    student = Keyword()
+    student_module = Keyword()
     updated_at = Date()
 
     class Index:

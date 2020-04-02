@@ -11,18 +11,18 @@ html_strip = analyzer('html_strip',
 
 class AchievementDocument(Document):
     """Achievement information"""
-    id = Keyword()
-    name = Text(fields={'keyword': Keyword()})
+    active = Boolean()
+    created_at = Date()
     description = Text(fields={'keyword': Keyword()})
+    id = Keyword()
+    image = Text(fields={'keyword': Keyword()})
+    name = Text(fields={'keyword': Keyword()})
+    owner = Keyword()
     related_courses = Keyword()
     related_educators = Keyword()
     related_parents = Keyword()
     related_students = Keyword()
     type = Keyword()
-    image = Text(fields={'keyword': Keyword()})
-    active = Boolean()
-
-    created_at = Date()
     updated_at = Date()
 
     class Index:

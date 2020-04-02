@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {getIds, changePage, changeView, changeSubView} from "../../actions/website";
-import {getList} from "../../actions/search";
+import {getList, resetOutsideSearch} from "../../actions/search";
 import {resetListItems} from "../../actions/common";
 
 import {button_types} from "../common/BubbleMenuComponent";
@@ -23,12 +23,14 @@ export class SearchDashboard extends Component {
         user: PropTypes.object.isRequired,
         ids: PropTypes.object.isRequired,
         view: PropTypes.string.isRequired,
+        outside_search: PropTypes.bool.isRequired,
         changePage: PropTypes.func.isRequired,
         changeView: PropTypes.func.isRequired,
         changeSubView: PropTypes.func.isRequired,
         getIds: PropTypes.func.isRequired,
         getList: PropTypes.func.isRequired,
         resetListItems: PropTypes.func.isRequired,
+        resetOutsideSearch: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -37,22 +39,23 @@ export class SearchDashboard extends Component {
         this.props.getIds();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.props.resetListItems()
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     console.log("updated")
+    //     this.props.resetListItems()
+    // }
 
     componentWillUnmount() {
         this.props.changePage("");
         this.props.changeView("");
         this.props.changeSubView("");
         this.props.resetListItems();
+        this.props.resetOutsideSearch();
     }
 
     render() {
-
         // Courses Tile List data
         const courses_tile_list_data = {
-            getList: this.props.getList,
+            getList: this.props.outside_search ? null : this.props.getList,
             get_what: "Courses",
             list_title: "Search Courses",
             tile_list_prop_list: [
@@ -83,7 +86,7 @@ export class SearchDashboard extends Component {
 
         // Educators Tile List
         const educators_tile_list_data = {
-            getList: this.props.getList,
+            getList: this.props.outside_search ? null : this.props.getList,
             get_what: "Educators",
             list_title: "Search Educators",
             tile_list_prop_list: [
@@ -108,7 +111,7 @@ export class SearchDashboard extends Component {
 
         // Students Tile List
         const students_tile_list_data = {
-            getList: this.props.getList,
+            getList: this.props.outside_search ? null : this.props.getList,
             get_what: "Students",
             list_title: "Search Students",
             tile_list_prop_list: [
@@ -187,6 +190,7 @@ const mapStateToProps = state => ({
     sub_view: state.website.sub_view,
     page: state.website.page,
     ids: state.website.ids,
+    outside_search: state.search.outside_search
 });
 
 export default connect(mapStateToProps, {
@@ -196,4 +200,5 @@ export default connect(mapStateToProps, {
     getIds,
     getList,
     resetListItems,
+    resetOutsideSearch,
 })(SearchDashboard);

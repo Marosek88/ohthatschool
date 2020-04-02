@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';
 
 import MoreEducator from "./MoreEducator";
 import MoreStudent from "./MoreStudent";
+import MoreParents from "./MoreParents";
+import MoreSchools from "./MoreSchools";
 
 
 export class PieMenuMore extends Component {
@@ -22,8 +24,12 @@ export class PieMenuMore extends Component {
         return (
             <Fragment>
                 <div id="info"/>
+
                 <MoreStudent/>
                 <MoreEducator/>
+                <MoreParents/>
+                <MoreSchools/>
+
                 <div className="go-to-top-container">
                     <div className="go-to-top" id="go-to-top" style={{display: "none"}} onClick={this.goToTop}>
                         <div className="go-to-top-text"><i className="icon-arrow-up"/></div>

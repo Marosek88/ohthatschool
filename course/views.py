@@ -4,23 +4,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 import json
 
-from .models import Category, Course, Module, Lesson
-from .serializers import CategorySerializer, CourseSerializer, ModuleSerializer, LessonSerializer
-from .documents import CategoryDocument, CourseDocument, ModuleDocument, LessonDocument
+from .models import Course, Module, Lesson
+from .serializers import CourseSerializer, ModuleSerializer, LessonSerializer
+from .documents import CourseDocument, ModuleDocument, LessonDocument
 
 from misc.classes import ElasticModelViewSet
-
-
-# ------------------------------------------------- CATEGORY -------------------------------------------------
-class CategoryViewSet(ElasticModelViewSet):
-    """Category viewset"""
-    queryset = Category.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = CategorySerializer
-    es_document_class = CategoryDocument
-    model_class = Category
 
 
 # ------------------------------------------------- COURSE EVERYONE -------------------------------------------------

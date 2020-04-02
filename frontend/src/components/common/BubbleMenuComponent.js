@@ -93,7 +93,7 @@ export class BubbleMenuComponent extends Component {
         return (
             <TransitionGroup component={null}>
                 <CSSTransition classNames="dialog" timeout={300}>
-                    <div className="bubble-menu-container" id="bubble-menu-container">
+                    <div className={this.props.page === "search" ? "bubble-menu-container mt-5" : "bubble-menu-container"} id="bubble-menu-container">
                         {buttons_render}
                     </div>
                 </CSSTransition>

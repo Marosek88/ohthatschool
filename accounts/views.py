@@ -6,13 +6,13 @@ from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
 from knox.models import AuthToken
 
-from .models import UserProfile
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileSerializer
+from .models import UserProfile, Category
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileSerializer, CategorySerializer
 from educator.serializers import EducatorSerializer
 from student.serializers import StudentSerializer
 from parent.serializers import ParentSerializer
 
-from .documents import UserProfileDocument
+from .documents import UserProfileDocument, CategoryDocument
 from educator.documents import EducatorDocument
 from student.documents import StudentDocument
 from parent.documents import ParentDocument
@@ -40,7 +40,7 @@ class RegisterAPI(generics.GenericAPIView):
             'last_name': data['last_name'],
             'email': data['email'],
             'active': True,
-            'location': {'lat': 53.337272, 'lon': -6.268247}
+            'location': {'lat': 0, 'lon': 0}
         }
         del data['first_name']
         del data['last_name']
@@ -218,3 +218,15 @@ class UserProfileViewSet(ElasticModelViewSet):
         }
 
         return Response(result, 200)
+
+
+# ------------------------------------------------- CATEGORY -------------------------------------------------
+class CategoryViewSet(ElasticModelViewSet):
+    """Category viewset"""
+    queryset = Category.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = CategorySerializer
+    es_document_class = CategoryDocument
+    model_class = Category
