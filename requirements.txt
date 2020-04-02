@@ -9,6 +9,7 @@ Django==3.0.3
 django-cors-headers==3.2.1
 django-elasticsearch-dsl==7.1.1
 django-elasticsearch-dsl-drf==0.20.5
+django-extensions==2.2.9
 django-heroku==0.3.1
 django-nine==0.2.3
 django-rest-knox==4.1.0
@@ -17,10 +18,14 @@ djangorestframework==3.11.0
 docutils==0.15.2
 elasticsearch==7.5.1
 elasticsearch-dsl==7.1.0
+graphviz==0.13.2
 gunicorn==20.0.4
 jmespath==0.9.5
 Pillow==7.0.0
+psycopg2-binary==2.8.4
 pycparser==2.19
+pydot==1.4.1
+pyparsing==2.4.6
 python-dateutil==2.8.1
 pytz==2019.3
 s3transfer==0.3.3
