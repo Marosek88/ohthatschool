@@ -6,8 +6,12 @@ import {
     COMMON_LOADED_LIST_ITEMS,
 
     GET_SEARCH_CATEGORIES,
+    GET_USER_CONNECTS,
     OUTSIDE_SEARCH,
     RESET_OUTSIDE_SEARCH,
+    COMMON_LOADING_DETAILS,
+    GET_DETAILS,
+    COMMON_LOADED_DETAILS,
 } from "./types";
 import {returnErrors, returnWarnings, returnInfo, returnSuccess} from "./messages"
 import {tokenConfig} from "./auth";
@@ -25,6 +29,20 @@ export const getCategories = () => dispatch => {
             });
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+// USER'S CONNECTS ----------------------------------------------------------------------------------------
+export const getUserConnects = () => (dispatch, getState) => {
+    axios.get('/api/auth/user_profile/get_user_connects/', tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: GET_USER_CONNECTS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
 };
 
 
@@ -95,7 +113,65 @@ export const getList = (get_what, get_id) => (dispatch, getState) => {
                 dispatch({type: COMMON_LOADED_LIST_ITEMS});
             });
     }
+    // COURSE MODULES ---------------------------------------------------------------------------------------- C M
+    else if (get_what === "Course Modules") {
+        axios.get(`/api/course/course/${get_id}/get_course_modules/`, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: GET_LIST_ITEMS,
+                    payload: res.data
+                });
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({type: COMMON_LOADED_LIST_ITEMS});
+            });
+    }
 
+};
+
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   GET DETAILS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+export const getDetails = (get_what, get_id) => (dispatch, getState) => {
+    dispatch({type: COMMON_LOADING_DETAILS});
+
+    // DETAILS FOR COURSE ---------------------------------------------------------------------------------------- C
+    if (get_what === "Course") {
+
+        axios.get(`/api/course/course/${get_id}`, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: GET_DETAILS,
+                    payload: res.data
+                });
+                dispatch({type: COMMON_LOADED_DETAILS});
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({type: COMMON_LOADED_DETAILS});
+            });
+    }
+};
+
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  CONNECT  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+export const connectAction = (what, with_what, form) => (dispatch, getState) => {
+    if (what === "Student" && with_what === "Course") {
+        axios
+            .post(`/api/student/student-course/connect_with_course/`, form, tokenConfig(getState))
+            .then(res => {
+                // dispatch({
+                //     type: UPDATE_STUDENT,
+                //     payload: res.data
+                // });
+                dispatch(returnSuccess(`You are now connected with this ${with_what}!`, 201))
+            })
+            .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }
 };
 
 

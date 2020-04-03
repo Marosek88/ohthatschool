@@ -106,7 +106,7 @@ export class FormComponent extends Component {
                         selects.push(select)
                     }
                 });
-                form.append(key, selects)
+                form.append(key, JSON.stringify(selects))
             } else {
                 form.append(key, form_data[key])
             }

@@ -7,9 +7,12 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from knox.models import AuthToken
 
 from .models import UserProfile, Category
+from student.models import Student
+
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileSerializer, CategorySerializer
+from course.serializers import CourseSerializer
 from educator.serializers import EducatorSerializer
-from student.serializers import StudentSerializer
+from student.serializers import StudentSerializer, StudentCourseSerializer
 from parent.serializers import ParentSerializer
 
 from .documents import UserProfileDocument, CategoryDocument
@@ -18,6 +21,47 @@ from student.documents import StudentDocument
 from parent.documents import ParentDocument
 
 from misc.classes import ElasticModelViewSet
+
+
+# Helper file for User additional data collection
+def _get_user_profile(user_profile):
+    # Get User Profile
+    result = {'user_profile': UserProfileSerializer(user_profile).data}
+
+    # Get Educator (if exists)
+    try:
+        result['educator'] = EducatorSerializer(user_profile.educator).data
+        # Educator's Connected Students
+        educator_students = user_profile.educator.students.all()
+        result['educator']['connects'] = {"students": StudentSerializer(educator_students, many=True).data}
+        # Educator's Course Students
+        result['educator']['connects']['course_students'] = []
+        for course in user_profile.educator.courses.all():
+            for student_course in course.student_courses.all():
+                result['educator']['connects']['course_students'].append(StudentSerializer(student_course.student).data)
+    except ObjectDoesNotExist:
+        result['educator'] = None
+
+    # Get Student (if exists)
+    try:
+        result['student'] = StudentSerializer(user_profile.student).data
+        # Student's Student Courses
+        student_courses = user_profile.student.student_courses.all()
+        result['student']['connects'] = {'student_courses': StudentCourseSerializer(student_courses, many=True).data}
+        # Courses id list
+        result['student']['connects']['courses'] = []
+        for student_course in result['student']['connects']['student_courses']:
+            result['student']['connects']['courses'].append(student_course['course']['id'])
+    except ObjectDoesNotExist:
+        result['student'] = None
+
+    # Get Parent (if exists)
+    try:
+        result['parent'] = ParentSerializer(user_profile.parent).data
+    except ObjectDoesNotExist:
+        result['parent'] = None
+
+    return result
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -62,40 +106,11 @@ class RegisterAPI(generics.GenericAPIView):
         UserProfileDocument.init()
         UserProfileDocument(**profile_data).save()
 
-        # Get Roles
-        es_helper = ElasticModelViewSet()
-        # Get User Profile and add ES data
-        user_profile = UserProfileSerializer(user_profile_object).data
-        # es_helper.add_es_data([user_profile, ], UserProfileDocument)
+        # Get all user data
+        result = _get_user_profile(user_profile_object)
+        result['token'] = AuthToken.objects.create(user)[1]
 
-        # Get Educator and add ES data (if exists)
-        try:
-            educator = EducatorSerializer(user_profile_object.educator).data
-            # es_helper.add_es_data([educator, ], EducatorDocument)
-        except ObjectDoesNotExist:
-            educator = None
-
-        # Get Student and add ES data (if exists)
-        try:
-            student = StudentSerializer(user_profile_object.student).data
-            # es_helper.add_es_data([student, ], StudentDocument)
-        except ObjectDoesNotExist:
-            student = None
-
-        # Get Parent and add ES data (if exists)
-        try:
-            parent = ParentSerializer(user_profile_object.parent).data
-            # es_helper.add_es_data([parent, ], ParentDocument)
-        except ObjectDoesNotExist:
-            parent = None
-
-        return Response({
-            'user_profile': user_profile,
-            'educator': educator,
-            'student': student,
-            'parent': parent,
-            "token": AuthToken.objects.create(user)[1]
-        }, 200)
+        return Response(result, 200)
 
 
 class LoginAPI(generics.GenericAPIView):
@@ -108,40 +123,11 @@ class LoginAPI(generics.GenericAPIView):
         user = serializer.validated_data
         user_profile_object = UserProfile.objects.get(pk=user.id)
 
-        # Get Roles
-        es_helper = ElasticModelViewSet()
-        # Get User Profile and add ES data
-        user_profile = UserProfileSerializer(user_profile_object).data
-        # es_helper.add_es_data([user_profile, ], UserProfileDocument)
+        # Get all user data
+        result = _get_user_profile(user_profile_object)
+        result['token'] = AuthToken.objects.create(user)[1]
 
-        # Get Educator and add ES data (if exists)
-        try:
-            educator = EducatorSerializer(user_profile_object.educator).data
-            # es_helper.add_es_data([educator, ], EducatorDocument)
-        except ObjectDoesNotExist:
-            educator = None
-
-        # Get Student and add ES data (if exists)
-        try:
-            student = StudentSerializer(user_profile_object.student).data
-            # es_helper.add_es_data([student, ], StudentDocument)
-        except ObjectDoesNotExist:
-            student = None
-
-        # Get Parent and add ES data (if exists)
-        try:
-            parent = ParentSerializer(user_profile_object.parent).data
-            # es_helper.add_es_data([parent, ], ParentDocument)
-        except ObjectDoesNotExist:
-            parent = None
-
-        return Response({
-            'user_profile': user_profile,
-            'educator': educator,
-            'student': student,
-            'parent': parent,
-            "token": AuthToken.objects.create(user)[1]
-        }, 200)
+        return Response(result, 200)
 
 
 class UserAPI(generics.RetrieveAPIView):
@@ -158,7 +144,6 @@ class UserAPI(generics.RetrieveAPIView):
 
 class UserProfileViewSet(ElasticModelViewSet):
     """Educator's Course viewset"""
-    # queryset = Course.objects.all()
     permission_classes = [
         permissions.IsAuthenticated
     ]
@@ -180,43 +165,11 @@ class UserProfileViewSet(ElasticModelViewSet):
         user_profile.image = request.data['image']
         user_profile.save()
         data = UserProfileSerializer(user_profile).data
-        # self.add_es_data([data, ])
         return Response(data, 200)
 
     @action(detail=False, methods=['GET'])
     def get_user_profiles(self, request):
-        # Get User Profile and add ES data
-        user_profile = UserProfileSerializer(request.user.user_profile).data
-        # self.add_es_data([user_profile, ], UserProfileDocument)
-
-        # Get Educator and add ES data (if exists)
-        try:
-            educator = EducatorSerializer(request.user.user_profile.educator).data
-            # self.add_es_data([educator, ], EducatorDocument)
-        except ObjectDoesNotExist:
-            educator = None
-
-        # Get Student and add ES data (if exists)
-        try:
-            student = StudentSerializer(request.user.user_profile.student).data
-            # self.add_es_data([student, ], StudentDocument)
-        except ObjectDoesNotExist:
-            student = None
-
-        # Get Parent and add ES data (if exists)
-        try:
-            parent = ParentSerializer(request.user.user_profile.parent).data
-            # self.add_es_data([parent, ], ParentDocument)
-        except ObjectDoesNotExist:
-            parent = None
-
-        result = {
-            'user_profile': user_profile,
-            'educator': educator,
-            'student': student,
-            'parent': parent
-        }
-
+        result = _get_user_profile(request.user.user_profile)
         return Response(result, 200)
 
 

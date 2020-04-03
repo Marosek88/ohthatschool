@@ -12,7 +12,6 @@ class Student(models.Model):
     """Student Django model"""
     active = models.BooleanField(default=True)
     categories = models.ManyToManyField(Category, related_name='students', blank=True)
-    courses = models.ManyToManyField(Course, related_name='students', blank=True)
     created_at = models.DateTimeField(auto_now=True)
     educators = models.ManyToManyField(Educator, related_name='students', blank=True)
     id = models.OneToOneField(UserProfile, related_name='student', on_delete=models.CASCADE, primary_key=True)
@@ -27,6 +26,9 @@ class Student(models.Model):
 
 
 class StudentCourse(models.Model):
+    class Meta:
+        unique_together = [['course', 'student']]
+
     """Student's Course Djngo Model"""
     course = models.ForeignKey(Course, related_name='student_courses', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)

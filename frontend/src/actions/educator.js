@@ -2,19 +2,18 @@ import axios from 'axios';
 
 import {
     CREATE_EDUCATOR,
-    GET_PROFILE,
     GET_FORM_CONTEXT,
     GET_DETAILS,
     RESET_DETAILS,
     GET_LIST_ITEMS,
     RESET_LIST_ITEMS,
     CREATE_ITEM,
+    DELETING,
+    ITEM_DELETED,
     COMMON_LOADING_DETAILS,
     COMMON_LOADED_DETAILS,
     COMMON_LOADING_LIST_ITEMS,
     COMMON_LOADED_LIST_ITEMS,
-    COMMON_LOADING_PROFILE,
-    COMMON_LOADED_PROFILE,
 
 } from "./types";
 import {returnErrors, returnWarnings, returnInfo, returnSuccess} from "./messages"
@@ -29,7 +28,7 @@ import {tokenConfig} from "./auth";
 export const getFormContext = (get_what, get_id) => (dispatch, getState) => {
 
     // FORM CONTEXT FOR COURSE CREATION --------------------------------------------------------------------- Form C
-    if (get_what === "Course") {
+    if (get_what === "Course" || get_what === "Edit Course") {
         axios.get('/api/auth/category/')
             .then(res => {
                 dispatch({
@@ -238,6 +237,51 @@ export const createItem = (add_what, form) => (dispatch, getState) => {
                     payload: res.data
                 });
                 dispatch(returnSuccess(`${add_what} created successfully!`, 201))
+            })
+            .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }
+};
+
+
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  UPDATE ITEM  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+export const updateItem = (update_what, update_id, form) => (dispatch, getState) => {
+    // GENERAL SETTINGS ----------------------------------------------------------------------------------------
+    if (update_what === "Edit Course") {
+        axios
+            .patch(`/api/course/course-educator/${update_id}/`, form, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: GET_DETAILS,
+                    payload: res.data
+                });
+                dispatch(returnSuccess(`${update_what} updated successfully!`, 201))
+            })
+            .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }
+};
+
+
+
+//  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  DELETE ITEM  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+export const deleteItem = (delete_what, delete_id) => (dispatch, getState) => {
+    dispatch({type: DELETING});
+    // GENERAL SETTINGS ----------------------------------------------------------------------------------------
+    if (delete_what === "Delete Course") {
+        axios
+            .delete(`/api/course/course-educator/${delete_id}/`, tokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: ITEM_DELETED,
+                    payload: res.data
+                });
+                dispatch(returnSuccess(`${delete_what} successful!`, 201))
             })
             .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     }

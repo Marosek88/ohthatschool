@@ -28,6 +28,7 @@ class EducatorViewSet(ElasticModelViewSet):
         return Educator.objects.all()
 
     """Any modify functions are disabled"""
+
     def create(self, request, *args, **kwargs):
         pass
 

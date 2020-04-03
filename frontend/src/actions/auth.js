@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {returnErrors} from './messages';
+import {returnErrors, returnSuccess} from './messages';
 
 import {
     USER_LOADED,
@@ -97,6 +97,8 @@ export const logout = () => (dispatch, getState) => {
             dispatch({
                 type: LOGOUT_SUCCESS
             });
+            dispatch(returnSuccess('Logged out successfully. See you next time!', 201))
+
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));

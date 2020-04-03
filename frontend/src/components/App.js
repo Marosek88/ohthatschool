@@ -25,6 +25,7 @@ import Footer from "./layout/Footer";
 import PrivateRoute from "./common/PrivateRoute";
 import WelcomeDashboard from "./welcome/WelcomeDashboard";
 import SearchDashboard from "./search/SearchDashboard";
+import SearchCourseDashboard from "./search/course/SearchCourseDashboard";
 import ProfileDashboard from "./profile/ProfileDashboard";
 import SettingsDashboard from "./profile/settings/SettingsDashboard";
 import EducatorDashboard from "./educator/EducatorDashboard";
@@ -69,7 +70,7 @@ class App extends Component {
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
                                     <Route exact path="/search" component={SearchDashboard}/>
-                                    <Route exact path={search_course_url} component={SearchDashboard}/>
+                                    <Route exact path={search_course_url} component={SearchCourseDashboard}/>
                                     <Route exact path={search_educator_url} component={SearchDashboard}/>
                                     <Route exact path={search_student_url} component={SearchDashboard}/>
                                     <PrivateRoute exact path="/profile" component={ProfileDashboard}/>

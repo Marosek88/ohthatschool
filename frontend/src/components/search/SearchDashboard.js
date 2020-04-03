@@ -160,22 +160,22 @@ export class SearchDashboard extends Component {
 
         return (
             <Fragment>
-                <SearchBarComponent />
+                <SearchBarComponent/>
                 <div className="container wrapper mt-2">
 
                     {this.props.view === "courses" ?
                         <TileListComponent tile_list_data={courses_tile_list_data}/>
                         : null}
 
-                    {this.props.view === "educators" ?
-                        <ComingSoonComponent bubble_menu={false}/>
-                        : null}
-
-                    {this.props.view === "students" ?
-                        <ComingSoonComponent bubble_menu={false}/>
-                        : null}
-
                 </div>
+
+                {this.props.view === "educators" ?
+                    <ComingSoonComponent bubble_menu={false}/>
+                    : null}
+
+                {this.props.view === "students" ?
+                    <ComingSoonComponent bubble_menu={false}/>
+                    : null}
 
                 <BubbleMenuComponent button_list={button_list}/>
 

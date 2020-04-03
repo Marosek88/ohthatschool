@@ -57,6 +57,14 @@ class CourseViewSet(ElasticModelViewSet):
         # self.add_es_data(data)
         return Response(data, 200)
 
+    @action(detail=True, methods=['GET'])
+    def get_course_modules(self, request, pk=None):
+        course = self.get_object()
+        course_modules = course.modules
+        serializer = ModuleSerializer(course_modules, many=True)
+        # self.add_es_data(serializer.data, ModuleDocument)
+        return Response(serializer.data, status=200)
+
 
 # ------------------------------------------------- COURSE EDUCATOR -------------------------------------------------
 class CourseEducatorViewSet(ElasticModelViewSet):

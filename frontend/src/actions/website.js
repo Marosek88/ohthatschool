@@ -1,15 +1,20 @@
 import axios from 'axios';
 
-import { GET_IDS, CHANGE_PAGE, CHANGE_VIEW, CHANGE_SUB_VIEW } from "./types";
+import {GET_IDS, CHANGE_PAGE, CHANGE_VIEW, CHANGE_SUB_VIEW} from "./types";
 
 // GET IDS
 export const getIds = () => dispatch => {
-    // let my_course_re = new RegExp('(?<=(my_courses\/))[0-9]+');
+    // Search Courses
+    let course_re = new RegExp('(?<=(courses\/))([0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12})');
+
+    // Educator Courses
     let my_course_re = new RegExp('(?<=(my_courses\/))([0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12})');
     let module_re = new RegExp('(?<=(module\/))([0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12})');
     let lesson_re = new RegExp('(?<=(lesson\/))([0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12})');
 
-    let ids =  {
+
+    let ids = {
+        "course": course_re.exec(window.location.href) ? course_re.exec(window.location.href)[0] : null,
         "my_course": my_course_re.exec(window.location.href) ? my_course_re.exec(window.location.href)[0] : null,
         "module": module_re.exec(window.location.href) ? module_re.exec(window.location.href)[0] : null,
         "lesson": lesson_re.exec(window.location.href) ? lesson_re.exec(window.location.href)[0] : null,

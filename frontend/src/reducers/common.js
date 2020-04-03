@@ -4,7 +4,6 @@ import {
     RESET_DETAILS,
     GET_LIST_ITEMS,
     RESET_LIST_ITEMS,
-    CREATE_ITEM,
     COMMON_LOADING_FORM,
     COMMON_LOADING_DETAILS,
     COMMON_LOADING_LIST_ITEMS,
@@ -15,7 +14,9 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_FAIL,
-    RESET_FORM_CONTEXT
+    RESET_FORM_CONTEXT,
+    DELETING,
+    ITEM_DELETED,
 } from "../actions/types";
 
 const initialState = {
@@ -30,6 +31,8 @@ const initialState = {
 
     profileData: {},
     profileLoading: false,
+
+    deleting: false,
 };
 
 export default function (state = initialState, action) {
@@ -65,6 +68,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 profileLoading: true,
+            };
+        case DELETING:
+            return {
+                ...state,
+                deleting: true,
+            };
+        case ITEM_DELETED:
+            return {
+                ...state,
+                deleting: false,
             };
 
         // --------------------------------- GET INFORMATION ---------------------------------

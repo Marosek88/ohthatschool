@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from .models import Student, StudentCourse, StudentModule, StudentLesson
 from achievement.models import Achievement
+from course.models import Course
 
 from .serializers import StudentSerializer, StudentCourseSerializer, StudentModuleSerializer, StudentLessonSerializer
 from achievement.serializers import AchievementSerializer
@@ -94,3 +95,10 @@ class StudentCourseViewSet(ElasticModelViewSet):
         modules = self.get_object().modules
         serializer = CourseSerializer(modules, many=True)
         return Response(serializer.data, 200)
+
+    @action(detail=False, methods=['POST'])
+    def connect_with_course(self, request):
+        student = request.user.user_profile.student
+        new_course = Course.objects.get(id=request.data['id'])
+        StudentCourse(course=new_course, student=student).save()
+        return Response(True, 200)
