@@ -14,8 +14,6 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         data = response.data
-        # Add Elasticsearch data
-        # self.add_es_data(data)
         return response
 
     @action(detail=False, methods=['GET'])
@@ -38,13 +36,8 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
 
             # Add entry to Elasticsearch
             self.es_document_class.init()
-            result = self.es_document_class(**data).save()
-
-            # self.add_es_data([response.data])
+            self.es_document_class(**data).save()
             return response
-        #
-        #
-        # return Response({"error_messages": {"elasticsearch": "Entry could not be created"}}, status=400)
 
     def perform_create(self, serializer):
         return super().perform_create(serializer)
@@ -52,8 +45,6 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         data = response.data
-        # Additional information from Elasticsearch
-        # self.add_es_data([data])
         return response
 
     def update(self, request, *args, **kwargs):
@@ -63,7 +54,6 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
             result = kwargs['partial_result']
         if result == 'Updated':
             data = super().update(request, *args, **kwargs).data
-            # self.add_es_data([data])
             return Response(data, 200)
         elif result == 'Elasticsearch entry not found':
             return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)
@@ -80,10 +70,8 @@ class ElasticModelViewSet(viewsets.ModelViewSet):
         if result == 'Updated':
             return super().destroy(request, *args, **kwargs)
         elif result == 'Elasticsearch entry not found':
-            # return Response({"error_messages": {"elasticsearch": "Elasticsearch entry not found"}}, status=400)
             return super().destroy(request, *args, **kwargs)
         elif result == "Couldn't connect to Elasticsearch":
-            # return Response({"error_messages": {"elasticsearch": "Couldn't connect to Elasticsearch"}})
             return super().destroy(request, *args, **kwargs)
         return Response({"error_messages": {"unknown": "Something went wrong"}}, status=400)
 

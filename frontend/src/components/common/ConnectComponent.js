@@ -14,9 +14,6 @@ export class ConnectComponent extends Component {
         detailsLoading: PropTypes.bool.isRequired,
     };
 
-    componentDidMount() {
-    }
-
     handleConnect = () => {
         const {connectAction, what, with_what, with_id, alternatives} = this.props.connect_context;
         let alternative_used = false;

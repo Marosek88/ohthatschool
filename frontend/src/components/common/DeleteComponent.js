@@ -15,9 +15,6 @@ export class ConnectComponent extends Component {
         detailsLoading: PropTypes.bool.isRequired,
     };
 
-    componentDidMount() {
-    }
-
     handleDeleteClick = () => {
         this.state.confirm_button = true;
         this.setState(this.state)
