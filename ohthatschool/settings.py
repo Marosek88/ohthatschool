@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'e4&)hrk_bj@m^p+gwjas_8hmu@%gjy80!t-%ji8na69dqemp7o')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('DEBUG') == "True":
+if os.environ.get('DEBUG', 'True') == "True":
     DEBUG = True
 else:
     DEBUG = False
@@ -110,13 +110,24 @@ WSGI_APPLICATION = 'ohthatschool.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ohthatschool',
+#         'USER': 'creed2',
+#         'PASSWORD': 'creed2',
+#         'HOST': '127.0.0.1',
+#         'PORT': 5432,
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ohthatschool',
-        'USER': 'creed2',
-        'PASSWORD': 'creed2',
-        'HOST': '127.0.0.1',
+        'NAME': 'mvfxekek',
+        'USER': 'mvfxekek',
+        'PASSWORD': '0pTeKFfEMBTJl0M5fkPiDi2XYxYUDYvx',
+        'HOST': 'kandula.db.elephantsql.com',
         'PORT': 5432,
     }
 }
@@ -160,7 +171,7 @@ STATIC_URL = '/static/'
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': os.environ.get('ELASTICSEARCH_DSL_HOST'),
+        'hosts': os.environ.get('ELASTICSEARCH_DSL_HOST', '127.0.0.1:9200'),
         # 'hosts': '127.0.0.1:9200',
         'timeout': 120
     },
@@ -169,9 +180,9 @@ ELASTICSEARCH_DSL = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None

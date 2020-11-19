@@ -103,8 +103,8 @@ class RegisterAPI(generics.GenericAPIView):
         user_profile_object.save()
 
         # Create a User Profile entry in Elasticsearch
-        UserProfileDocument.init()
-        UserProfileDocument(**profile_data).save()
+        # UserProfileDocument.init()
+        # UserProfileDocument(**profile_data).save()
 
         # Get all user data
         result = _get_user_profile(user_profile_object)
@@ -148,7 +148,7 @@ class UserProfileViewSet(ElasticModelViewSet):
         permissions.IsAuthenticated
     ]
     serializer_class = UserProfileSerializer
-    es_document_class = UserProfileDocument
+    # es_document_class = UserProfileDocument
     model_class = UserProfile
 
     parser_classes = (MultiPartParser, FormParser)
